@@ -1,0 +1,19 @@
+{
+  "name": "uottahack-headcount",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/siva-warhammer1998/uOttaHack-HeadCount.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/siva-warhammer1998/uOttaHack-HeadCount/issues"
+  },
+  "homepage": "https://github.com/siva-warhammer1998/uOttaHack-HeadCount#readme"
+}
