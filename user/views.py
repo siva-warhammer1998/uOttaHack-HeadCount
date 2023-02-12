@@ -80,6 +80,7 @@ def safety(request):
     non_safe_users = Employee.objects.filter(safe=False)
     print(len(safe_users), len(non_safe_users))
     count_non_safe = len(non_safe_users)
+    phones = []
     count_safe = len(safe_users)
     context = {
         'safe' : safe_users,

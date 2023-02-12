@@ -7,7 +7,7 @@
     <br>
 
     {% for user in not_safe%}
-    <a href="tel:{{ user.employee.phone }}">
+    <a href="tel:{{ user.phone }}">
         <div class="p-3 mb-2 bg-danger text-white">{{user.name}}</div>
 
     </a>
