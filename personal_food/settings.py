@@ -25,7 +25,7 @@ SECRET_KEY = 'ejz3_p(#e3_@&wi59uwj8(5rjq)^6gahebfw@)%t4li$p@!%5z'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", "18.219.15.140", "0.0.0.0", "127.0.0.1", "*"]
+ALLOWED_HOSTS = ["localhost", "18.219.15.140", "0.0.0.0", "127.0.0.1", "*", "100.25.211.46"]
 #ALLOWED_HOSTS = []
 
 # Application definition
