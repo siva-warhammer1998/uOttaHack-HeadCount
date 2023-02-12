@@ -40,7 +40,7 @@ INSTALLED_APPS = [
 
     'user.apps.UserConfig',
     'crispy_forms',
-    'webpush',
+
 ]
 
 
