@@ -18,31 +18,8 @@ from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 @login_required
 def home(request):
-    webpush_settings = getattr(settings, 'WEBPUSH_SETTINGS', {})
-    vapid_key = webpush_settings.get('VAPID_PUBLIC_KEY')
-    return render(request, 'user/home.html', {"user": request.user, 'vapid_key': vapid_key})
     return render(request, 'user/home.html')
     
-
-@require_POST
-@csrf_exempt
-def send_push(request):
-    try:
-        body = request.body
-        data = json.loads(body)
-
-        if 'head' not in data or 'body' not in data or 'id' not in data:
-            return JsonResponse(status=400, data={"message": "Invalid data format"})
-
-        user_id = data['id']
-        user = get_object_or_404(User, pk=user_id)
-        payload = {'head': data['head'], 'body': data['body']}
-        send_user_notification(user=user, payload=payload, ttl=1000)
-
-        return JsonResponse(status=200, data={"message": "Web push successful"})
-    except TypeError:
-        return JsonResponse(status=500, data={"message": "An error occurred"})
-
 @login_required
 def push(request):
     def on_publish(client,userdata,result):
@@ -54,6 +31,7 @@ def push(request):
         print("response: " + str(msg.payload))
         time.sleep(4)
         client.publish('STEM/1/CRX-401/student',payload=msg.payload)
+
     client = mqtt.Client()
     client.on_publish = on_publish
     client.tls_set(ca_certs=certifi.where())
@@ -84,11 +62,17 @@ def get_response(request):
         employee.safe = False
         employee.save()
     
-    print(employee.safe)
-    print(response, request.user.employee.id)
-    return JsonResponse({'status': 'success'})
+    # return render(request, 'user/success.html')
+    return redirect('success')
   else:
-    return JsonResponse({'status': 'error'})
+    return redirect('success')
+
+    # return render(request, 'user/success.html')
+
+@login_required
+def safety_reset(request):
+    Employee.objects.filter(safe=True).update(safe=False)
+    return redirect('safety')
 
 @login_required
 def safety(request):

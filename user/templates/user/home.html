@@ -2,6 +2,8 @@
 {% block content %}
 <!-- <h1>helo</h1> -->
 
+<!-- {{user.manager}} -->
+{% if user.manager %}
 <div class="container col-md-6">
   <button type="button" class="btn btn-danger" onclick="push()"> 
     <!-- <a href="{% url 'safety'%}" >Send Broadcast Message</a> -->
@@ -9,6 +11,13 @@
     </button>
 </form>
 </div>
+{% else %}
+<div class="container">
+
+  <h2>Nothing to see here! Enjoy the presentation</h2>
+</div>
+{% endif %}
+
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.2/mqttws31.min.js"></script>
 
 <script>
@@ -31,7 +40,7 @@ reader.onload = function(event) {
     onFailure: onFailure,
   }
   const connectUrl = 'mr-connection-pi5rgecxa7b.messaging.solace.cloud';
-  const client = new Paho.MQTT.Client(connectUrl,Number(8443),"clientId-2");
+  const client = new Paho.MQTT.Client(connectUrl,Number(8443),"clientId-1");
   client.useSSL = true
   client.connect(options);
   client.onMessageArrived = onMessageArrived
@@ -49,24 +58,10 @@ reader.onload = function(event) {
     console.log("Connected to MQTT Broker");
     client.send("STEM/1/CRX-401/student", "Are you safe");
     client.subscribe("response");
-   
+    alert("The message has been sent!")
+    window.location.href='http://localhost:8000/safety_reset'
   }
 
-
-    
-    // client.connect({
-    //     userName: "solace-cloud-client",
-    //     password: "chhe5o2afe2pdvu66oj6tgd05k",
-    //     useSSL: true,
-    //     onSuccess: function() {
-    //         console.log("Connected to publish");
-    //         // client.subscribe("response", { qos: 0 });
-    //         client.send("STEM/1/CRX-401/student", "Are you safe");
-    //     },
-    //     onFailure: function(e) {
-    //         console.log("Connection failed, ERROR: " + e.errorMessage);
-    //     }
-    // });
 }
 
 </script>

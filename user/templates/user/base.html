@@ -213,6 +213,7 @@ const options = {
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.2/mqttws31.min.js"></script>
 <script type="text/javascript">
+  
 $.ajaxSetup({
   beforeSend: function(xhr, settings) {
     xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
@@ -221,7 +222,9 @@ $.ajaxSetup({
 
 
     // Connect to Solace MQTT broker
-    var client = new Paho.MQTT.Client('mr-connection-pi5rgecxa7b.messaging.solace.cloud', 8443, 'clientId');
+    // var clientId = "clientId-" + {{ user.id }};
+    // console.log(clientId);
+    var client = new Paho.MQTT.Client('mr-connection-pi5rgecxa7b.messaging.solace.cloud', 8443, "clientId-1");
     client.onConnectionLost = onConnectionLost;
     client.onMessageArrived = onMessageArrived;
     client.connect({
@@ -245,7 +248,7 @@ $.ajaxSetup({
     function onMessageArrived(message) {
         console.log('Message arrived: Topic: ' + message.destinationName + ', Payload: ' + message.payloadString);
         // Display the alert to the user
-        var response = confirm(message.payloadString + "Yes Or No");
+        var response = confirm(message.payloadString + ": yes or no");
         sendResponse(response)
     }
 
@@ -258,6 +261,8 @@ $.ajaxSetup({
       csrfmiddlewaretoken: '{{ csrf_token }}'
     },
     success: function (data) {
+      alert("Please don't panic. Everything will be alright!")
+      window.location.href="http://localhost:8000/success"
       console.log("Response sent successfully");
     },
     error: function (data) {
