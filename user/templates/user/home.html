@@ -14,32 +14,59 @@
 <script>
 
 async function push() {
-    const client = new Paho.MQTT.Client("mr-connection-pi5rgecxa7b.messaging.solace.cloud", 8443, "clientId");
+    // Create a new FileReader object
+const reader = new FileReader();
 
-    client.onMessageArrived = function(message) {
-        console.log("response: " + message.payloadString);
-        client.send("STEM/1/CRX-401/student", message.payloadString, { qos: 0, retained: false });
-    };
+// Set up an event listener for when the file has been loaded
+reader.onload = function(event) {
+  console.log(event.target.result);
+};
 
-    client.onConnectionLost = function(responseObject) {
-        if (responseObject.errorCode !== 0) {
-            console.log("onConnectionLost:" + responseObject.errorMessage);
-        }
-    };
 
-    client.connect({
-        userName: "solace-cloud-client",
-        password: "chhe5o2afe2pdvu66oj6tgd05k",
-        useSSL: true,
-        onSuccess: function() {
-            console.log("Connected to publish");
-            client.subscribe("response", { qos: 0 });
-            client.send("STEM/1/CRX-401/student", "Are you safe", { qos: 0, retained: false });
-        },
-        onFailure: function(e) {
-            console.log("Connection failed, ERROR: " + e.errorMessage);
-        }
-    });
+  const options = {
+    userName: 'solace-cloud-client',
+    password: 'chhe5o2afe2pdvu66oj6tgd05k',
+    useSSL: true,
+    onSuccess: onConnect,
+    onFailure: onFailure,
+  }
+  const connectUrl = 'mr-connection-pi5rgecxa7b.messaging.solace.cloud';
+  const client = new Paho.MQTT.Client(connectUrl,Number(8443),"clientId-2");
+  client.useSSL = true
+  client.connect(options);
+  client.onMessageArrived = onMessageArrived
+  function onMessageArrived(message) {
+    console.log("response: " + message.payloadString);
+  }
+
+  function onConnectionLost(responseObject) {
+    if (responseObject.errorCode !== 0) {
+      console.log("onConnectionLost:" + responseObject.errorMessage);
+    }
+  }
+
+  function onConnect() {
+    console.log("Connected to MQTT Broker");
+    client.send("STEM/1/CRX-401/student", "Are you safe");
+    client.subscribe("response");
+   
+  }
+
+
+    
+    // client.connect({
+    //     userName: "solace-cloud-client",
+    //     password: "chhe5o2afe2pdvu66oj6tgd05k",
+    //     useSSL: true,
+    //     onSuccess: function() {
+    //         console.log("Connected to publish");
+    //         // client.subscribe("response", { qos: 0 });
+    //         client.send("STEM/1/CRX-401/student", "Are you safe");
+    //     },
+    //     onFailure: function(e) {
+    //         console.log("Connection failed, ERROR: " + e.errorMessage);
+    //     }
+    // });
 }
 
 </script>
