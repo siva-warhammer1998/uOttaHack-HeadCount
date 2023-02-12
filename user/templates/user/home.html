@@ -1,0 +1,55 @@
+{% extends 'user/base.html' %} {% load static %} {% load crispy_forms_tags%}
+{% block content %}
+<!-- <h1>helo</h1> -->
+
+<div class="container col-md-6">
+  <button type="button" class="btn btn-danger" onclick="push()"> 
+    <!-- <a href="{% url 'safety'%}" >Send Broadcast Message</a> -->
+    Send Broadcast message
+    </button>
+</form>
+</div>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.2/mqttws31.min.js"></script>
+
+<script>
+
+async function push() {
+    const client = new Paho.MQTT.Client("mr-connection-pi5rgecxa7b.messaging.solace.cloud", 8443, "clientId");
+
+    client.onMessageArrived = function(message) {
+        console.log("response: " + message.payloadString);
+        client.send("STEM/1/CRX-401/student", message.payloadString, { qos: 0, retained: false });
+    };
+
+    client.onConnectionLost = function(responseObject) {
+        if (responseObject.errorCode !== 0) {
+            console.log("onConnectionLost:" + responseObject.errorMessage);
+        }
+    };
+
+    client.connect({
+        userName: "solace-cloud-client",
+        password: "chhe5o2afe2pdvu66oj6tgd05k",
+        useSSL: true,
+        onSuccess: function() {
+            console.log("Connected to publish");
+            client.subscribe("response", { qos: 0 });
+            client.send("STEM/1/CRX-401/student", "Are you safe", { qos: 0, retained: false });
+        },
+        onFailure: function(e) {
+            console.log("Connection failed, ERROR: " + e.errorMessage);
+        }
+    });
+}
+
+</script>
+
+
+
+
+
+
+
+
+
+{% endblock content %}
