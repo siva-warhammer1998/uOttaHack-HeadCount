@@ -39,8 +39,10 @@ reader.onload = function(event) {
     onSuccess: onConnect,
     onFailure: onFailure,
   }
+  var clientId = "clientId-" + {{ user.id }};
+    console.log(clientId);
   const connectUrl = 'mr-connection-pi5rgecxa7b.messaging.solace.cloud';
-  const client = new Paho.MQTT.Client(connectUrl,Number(8443),"clientId-1");
+  const client = new Paho.MQTT.Client(connectUrl,Number(8443),clientId);
   client.useSSL = true
   client.connect(options);
   client.onMessageArrived = onMessageArrived

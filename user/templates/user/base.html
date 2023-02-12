@@ -222,9 +222,11 @@ $.ajaxSetup({
 
 
     // Connect to Solace MQTT broker
-    // var clientId = "clientId-" + {{ user.id }};
-    // console.log(clientId);
-    var client = new Paho.MQTT.Client('mr-connection-pi5rgecxa7b.messaging.solace.cloud', 8443, "clientId-1");
+    console.log("HELO")
+    var clientId = "clientId-" + {{ user.id }};
+    console.log(clientId);
+    console.log("BYE")
+    var client = new Paho.MQTT.Client('mr-connection-pi5rgecxa7b.messaging.solace.cloud', 8443, clientId);
     client.onConnectionLost = onConnectionLost;
     client.onMessageArrived = onMessageArrived;
     client.connect({
