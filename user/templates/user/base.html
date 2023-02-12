@@ -34,7 +34,7 @@
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-          <a class="navbar-brand" href="{% url 'user-home'%}">Personal Food Log App</a>
+          <a class="navbar-brand" href="{% url 'user-home'%}">FireFly</a>
             
           <div
             class="collapse navbar-collapse justify-content-end"  id="navbarTogglerDemo01"
@@ -222,10 +222,8 @@ $.ajaxSetup({
 
 
     // Connect to Solace MQTT broker
-    console.log("HELO")
+
     var clientId = "clientId-" + {{ user.id }};
-    console.log(clientId);
-    console.log("BYE")
     var client = new Paho.MQTT.Client('mr-connection-pi5rgecxa7b.messaging.solace.cloud', 8443, clientId);
     client.onConnectionLost = onConnectionLost;
     client.onMessageArrived = onMessageArrived;
